@@ -1,0 +1,29 @@
+name: test 
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  create_dml_pr:
+    if: startsWith(github.event.comment.body, '/apply')
+    runs-on: dev
+    permissions:
+      contents: read
+      id-token: write
+      issues: write
+    steps:
+      - name: Add eyes reaction
+        env:
+          REPO: ${{ github.repository }}
+          COMMENT_ID: ${{ github.event.comment.id }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api \
+          --method POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          /repos/$REPO/issues/comments/$COMMENT_ID/reactions \
+          -f content='eyes'
+
+
