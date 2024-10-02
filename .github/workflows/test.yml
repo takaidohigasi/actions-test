@@ -31,8 +31,8 @@ jobs:
         run: |
           DELIMITER=THISISDELIMITERSHOUDNEVERDUPAGKUGJHDGFJSHDGTYEWOM
           echo "body<<$DELIMITER" >> $GITHUB_OUTPUT
-          echo ""
-          echo "test"
+          echo "" >> $GITHUB_OUTPUT
+          echo "test" >> $GITHUB_OUTPUT
           echo "<!-- test:magic:comment -->" >> $GITHUB_OUTPUT
 
           echo "$DELEMITER" >> $GITHUB_OUTPUT
