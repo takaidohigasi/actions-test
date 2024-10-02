@@ -53,7 +53,7 @@ jobs:
         if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
         id: pr-number
         run: |
-          python -c "import re; body="${{ steps.magic-comment.outputs.comment-body }}"; print(re.search(r'/(?<=\/pull\/)(\d+)/', body).group(1))"
+          python -c "import re; body=\"${{ steps.magic-comment.outputs.comment-body }}\"; print(re.search(r'/(?<=\/pull\/)(\d+)/', body).group(1))"
 
       - name: delete comment
         if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
