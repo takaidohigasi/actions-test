@@ -7,7 +7,7 @@ on:
 jobs:
   test:
     if: startsWith(github.event.comment.body, '/apply')
-    runs-on: dev
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
