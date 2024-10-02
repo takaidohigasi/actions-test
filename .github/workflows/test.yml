@@ -53,7 +53,7 @@ jobs:
         if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
         id: pr-number
         run: |
-          grep pull ${{ steps.magic-comment.outputs.comment-body }} >> GITHUB_OUTPUT
+          echo "${{ steps.magic-comment.outputs.comment-body }})" | grep pull >> GITHUB_OUTPUT
           python -c "import re; body='$GITHUB_OUTPUT'; print(re.search(r'/(?<=\/pull\/)(\d+)/', body).group(1))"
 
       - name: delete comment
