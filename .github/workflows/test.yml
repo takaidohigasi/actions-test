@@ -5,7 +5,7 @@ on:
     types: [created]
 
 jobs:
-  create_dml_pr:
+  test:
     if: startsWith(github.event.comment.body, '/apply')
     runs-on: dev
     permissions:
