@@ -26,15 +26,21 @@ jobs:
           /repos/$REPO/issues/comments/$COMMENT_ID/reactions \
           -f content='eyes'
 
+      - name: setup python
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
+        with:
+          python-version: '3.x'
+
       - name: create comment body
         id: comment-body
         run: |
-          echo "body<<EOF" >> $GITHUB_OUTPUT
+          DELIMITER=THISISDELIMITERSHOUDNEVERDUPAGKUGJHDGFJSHDGTYEWOM
+          echo "body<<$DELIMETER" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "test" >> $GITHUB_OUTPUT
           echo "<!-- test:magic:comment -->" >> $GITHUB_OUTPUT
 
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "$DELIMITER" >> $GITHUB_OUTPUT
 
       - name: find magic comment
         uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3.1.0
@@ -42,6 +48,14 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body-includes: "<!-- test:magic:comment -->"
+
+      - name: find pull request number
+        if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
+        id: pr-number
+        run: |
+          import re
+          print(re.search(r'/(?<=\/pull\/)(\d+)/', steps.magic-comment.outputs.group(1))
+          
 
       - name: delete comment
         if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
