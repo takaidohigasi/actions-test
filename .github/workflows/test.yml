@@ -35,7 +35,7 @@ jobs:
         id: comment-body
         run: |
           DELIMITER=THISISDELIMITERSHOUDNEVERDUPAGKUGJHDGFJSHDGTYEWOM
-          echo "body<<$DELIMETER" >> $GITHUB_OUTPUT
+          echo "body<<$DELIMITER" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "test" >> $GITHUB_OUTPUT
           echo "<!-- test:magic:comment -->" >> $GITHUB_OUTPUT
