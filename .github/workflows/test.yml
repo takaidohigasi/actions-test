@@ -29,12 +29,12 @@ jobs:
       - name: create comment body
         id: comment-body
         run: |
-          echo "body<<EOF" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "test" >> $GITHUB_OUTPUT
-          echo "<!-- test:magic:comment -->" >> $GITHUB_OUTPUT
+          echo "body<<EOF" >> "$GITHUB_OUTPUT"
+          echo "" >> "$GITHUB_OUTPUT"
+          echo "test" >> "$GITHUB_OUTPUT"
+          echo "<!-- test:magic:comment -->" >> "$GITHUB_OUTPUT"
 
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "EOF" >> "$GITHUB_OUTPUT"
 
       - name: find magic comment
         uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3.1.0
