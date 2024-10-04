@@ -53,7 +53,8 @@ jobs:
         if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
         id: pr-number
         run: |
-          echo "${{ steps.magic-comment.outputs.comment-body }})" | grep pull | awk -F'/' '{print $NF}' >> $GITHUB_OUTPUT
+          pr_number=$(echo "${{ steps.magic-comment.outputs.comment-body }})" | grep pull | awk -F'/' '{print $NF}')
+          echo "body=$pr_number" >> $GITHUB_OUTPUT
 
       - name: print pull request number
         if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
