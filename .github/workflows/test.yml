@@ -55,6 +55,11 @@ jobs:
         run: |
           echo "${{ steps.magic-comment.outputs.comment-body }})" | grep pull | awk -F'/' '{print $NF}'
 
+      - name: print pull request number
+        if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
+        run: |
+          echo "${{ steps.pr-number.outputs }}"
+          
       - name: delete comment
         if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
