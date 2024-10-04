@@ -53,12 +53,12 @@ jobs:
         if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
         id: pr-number
         run: |
-          echo "${{ steps.magic-comment.outputs.comment-body }})" | grep pull | awk -F'/' '{print $NF}'
+          echo "${{ steps.magic-comment.outputs.comment-body }})" | grep pull | awk -F'/' '{print $NF}' >> $GITHUB_OUTPUT
 
       - name: print pull request number
         if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
         run: |
-          echo "${{ steps.pr-number.outputs }}"
+          echo "${{ steps.pr-number.outputs.body }}"
           
       - name: delete comment
         if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
