@@ -55,17 +55,29 @@ jobs:
         run: |
           echo "${{ steps.magic-comment.outputs.comment-body }})" | grep pull | awk -F'/' '{print $NF}'
 
-      - name: delete comment
-        if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      - name: Get Issue Assignee
+        uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            github.rest.issues.deleteComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              comment_id: ${{ steps.magic-comment.outputs.comment-id }},
-            })
+            const issue = await github.rest.issues.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number
+          });
+          const assignee = issue.data.assignee ? issue.data.assignee.login : 'No assignee';
+          console.log(`Assignee: ${assignee}`);
+      #- name: delete comment
+      #  if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
+      #  uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      #  with:
+      #    github-token: ${{ secrets.GITHUB_TOKEN }}
+      #    script: |
+      #      github.rest.issues.deleteComment({
+      #        owner: context.repo.owner,
+      #        repo: context.repo.repo,
+      #        comment_id: ${{ steps.magic-comment.outputs.comment-id }},
+      #      })
 
       - name: create comment on the issue
         uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4.0.0
