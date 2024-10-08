@@ -72,6 +72,13 @@ jobs:
               repo: context.repo.repo,
               issue_number: context.issue.number
             })
+
+      - name: print pull request number
+        if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
+        run: |
+          ASSIGNEE="${{ github.event.issue.assignee.login }}"
+          echo $ASSIGNEE
+
           
       #- name: delete comment
       #  if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
