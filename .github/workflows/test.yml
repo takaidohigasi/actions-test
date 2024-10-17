@@ -26,6 +26,7 @@ jobs:
         run: |
           pr_number=$(echo "${{ steps.magic-comment.outputs.comment-body }})" | grep pull | awk -F'/' '{print $NF}')
           echo "body=$pr_number" >> $GITHUB_OUTPUT
+          echo $pr_number
 
   test:
     if: startsWith(github.event.comment.body, '/apply')
@@ -78,11 +79,10 @@ jobs:
             })
 
       - name: print pull request number
-        if: ${{ needs.find_magic_comments.pr_number != '' }}
         run: |
           ASSIGNEE="${{ github.event.issue.assignee.login }}"
           echo $ASSIGNEE
-          echo ${{ needs.find_magic_comments.pr_number }}
+          echo ${{ needs.find_magic_comments.outputs.pr_number }}
           
       #- name: delete comment
       #  if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
