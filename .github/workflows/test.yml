@@ -82,7 +82,7 @@ jobs:
         run: |
           ASSIGNEE="${{ github.event.issue.assignee.login }}"
           echo $ASSIGNEE
-          echo ${{ needs.find_magic_comments.outputs.pr_number }}
+          echo ${ needs.find_magic_comment.outputs.pr_number }}
           
       #- name: delete comment
       #  if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
