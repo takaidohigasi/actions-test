@@ -5,6 +5,28 @@ on:
     types: [created]
 
 jobs:
+  find_magic_comment:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: read
+    outputs:
+      pr_number: ${{ steps.pr-number.outputs.body }}
+    steps:
+      - name: find magic comment
+        uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3.1.0
+        id: magic-comment
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body-includes: "<!-- test:magic:comment -->"
+
+      - name: find pull request number
+        if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
+        id: pr-number
+        run: |
+          pr_number=$(echo "${{ steps.magic-comment.outputs.comment-body }})" | grep pull | awk -F'/' '{print $NF}')
+          echo "body=$pr_number" >> $GITHUB_OUTPUT
+
   test:
     if: startsWith(github.event.comment.body, '/apply')
     runs-on: ubuntu-latest
@@ -12,6 +34,7 @@ jobs:
       contents: read
       id-token: write
       issues: write
+    needs: find_magic_comment
     steps:
       - name: Add eyes reaction
         env:
@@ -42,25 +65,6 @@ jobs:
 
           echo "$DELIMITER" >> $GITHUB_OUTPUT
 
-      - name: find magic comment
-        uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3.1.0
-        id: magic-comment
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          body-includes: "<!-- test:magic:comment -->"
-
-      - name: find pull request number
-        if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
-        id: pr-number
-        run: |
-          pr_number=$(echo "${{ steps.magic-comment.outputs.comment-body }})" | grep pull | awk -F'/' '{print $NF}')
-          echo "body=$pr_number" >> $GITHUB_OUTPUT
-
-      - name: print pull request number
-        if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
-        run: |
-          echo "${{ steps.pr-number.outputs.body }}"
-          
       - name: Get Issue Assignee
         uses: actions/github-script@v6
         id: issue
@@ -74,11 +78,10 @@ jobs:
             })
 
       - name: print pull request number
-        if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
+        if: ${{ needs.find_magic_comments.pr_number != '' }}
         run: |
           ASSIGNEE="${{ github.event.issue.assignee.login }}"
           echo $ASSIGNEE
-
           
       #- name: delete comment
       #  if: ${{ steps.magic-comment.outputs.comment-id != 0 }}
