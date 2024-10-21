@@ -100,4 +100,4 @@ jobs:
         uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4.0.0
         with:
           issue-number: ${{ github.event.issue.number }}
-          body: ${{ steps.comment-body.outputs.body }}
+          body: ${{ needs.find_magic_comment.outputs.pr_number }}
