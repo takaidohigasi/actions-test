@@ -1,0 +1,10 @@
+name: test
+title: test
+body:
+  - type: textarea
+    id: queries
+    attributes:
+      placeholder: INSERT INTO main ...
+      render: SQL
+    validations:
+      required: true
