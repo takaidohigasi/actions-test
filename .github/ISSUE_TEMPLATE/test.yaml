@@ -6,7 +6,7 @@ body:
     id: queries
     attributes:
       label: SQL
-      description: fuga
+      description: Enter the DML query. Input Google Drive URL on here if DML query includes PII (Personal Identification Information)
       placeholder: INSERT INTO main ...
       render: SQL
     validations:
